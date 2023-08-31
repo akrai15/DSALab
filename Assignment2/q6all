@@ -1,0 +1,260 @@
+#include <stdio.h>
+#include <string.h>
+#include<math.h>
+#define MAX_SIZE 100
+void postfixFind(char postfix[])
+{
+    int stack[MAX_SIZE];
+    int i, j = 0, op1, op2, pos = 0;
+    for (i = 0; postfix[i] != '\0'; i++)
+    {
+        if (postfix[i] >= '0' && postfix[i] <= '9')
+        {
+            stack[j] = postfix[i] - '0';
+            pos = j;
+            j++;
+        }
+        else
+        {
+            op1 = stack[pos];
+            op2 = stack[pos - 1];
+            switch (postfix[i])
+            {
+            case '+':
+                stack[j] = op1 + op2;
+                pos = j;
+                j++;
+                break;
+
+            case '-':
+                stack[j] = op1 - op2;
+                pos = j;
+                j++;
+                break;
+            case '*':
+                stack[j] = op1 * op2;
+                pos = j;
+                j++;
+                break;
+            case '/':
+                stack[j] = op2 /op1;
+                pos = j;
+                j++;
+                break;
+            case '^':
+                stack[j] = pow(op1, op2);
+                pos = j;
+                j++;
+                break;
+            }
+        }
+    }
+    printf("the output value of the expression is : %d \n", stack[pos]);
+}
+int main()
+{
+    char postfix[MAX_SIZE];
+    printf("enter your postfix exp for evalution \n");
+    fgets(postfix, sizeof(postfix), stdin);
+    postfix[strlen(postfix) - 1] = '\0';
+
+    postfixFind(postfix);
+    return 0;
+}
+
+
+
+
+7.
+
+
+
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+int kfront = -1, krear = -1;  
+int queue[100]; 
+struct Node
+{
+    int data;
+    struct Node *next;
+     
+};
+struct Node *num(int data)
+{
+    struct Node *one = (struct Node *)malloc(sizeof(struct Node));
+    one->next = NULL;
+    
+    one->data = data;
+    
+    return one;
+}
+struct Node* front=NULL;
+struct Node* rear=NULL;
+void push(){
+    int data;
+    printf("enter data");
+    scanf("%d",&data);
+      struct Node *newNode = num(data);
+
+    if(front == NULL && rear == NULL)
+    {
+        
+        front = rear = newNode;
+    }
+    
+    else
+    {
+        
+        rear->next = newNode;
+
+        rear = newNode;
+    }
+}
+
+void pop(){
+        struct Node *temp;
+
+    if(front == NULL)
+         printf("underflow.\n");
+    else
+    {
+        temp = front;
+
+       
+        front = front->next;
+
+     
+        if(front == NULL){
+            rear = NULL;
+        }
+
+       
+       free(temp);
+    }
+}
+void length(){
+    struct Node* temp=front;
+    int n=0;
+    while(temp!=rear){
+        temp=temp->next;
+        n++;
+    }
+    printf("%d\n",n+1);
+}
+void print(){
+    struct Node* temp=front;
+    while(temp!=NULL){
+        printf("%d ",temp->data);
+        temp=temp->next;
+    }
+    printf("\n");
+}
+void insert()  
+{  
+    int item;  
+    printf("\nEnter the element\n");  
+    scanf("\n%d",&item);      
+    if(krear == 99)  
+    {  
+        printf("\nOVERFLOW\n");  
+        return;  
+    }  
+    if(kfront == -1 && krear == -1)  
+    {  
+        kfront = 0;  
+        krear = 0;  
+    }  
+    else   
+    {  
+        krear = krear+1;  
+    }  
+    queue[krear] = item;  
+    printf("\nValue inserted ");  
+      
+}  
+void delete()  
+{  
+    int item;   
+    if (kfront == -1 || kfront > krear)  
+    {  
+        printf("\nUNDERFLOW\n");  
+        return;  
+              
+    }  
+    else  
+    {  
+        item = queue[kfront];  
+        if(kfront == krear)  
+        {  
+            kfront = -1;  
+            krear = -1 ;  
+        }  
+        else   
+        {  
+            kfront = kfront + 1;  
+        }  
+        printf("\nvalue deleted ");  
+    }  
+      
+      
+}  
+      
+void display()  
+{  
+    int i;  
+    if(krear == -1)  
+    {  
+        printf("\nEmpty queue\n");  
+    }  
+    else  
+    { printf("\nprinting values .....\n");  
+        for(i=kfront;i<=krear;i++)  
+        {  
+            printf("\n%d\n",queue[i]);  
+        }     
+    }  
+}  
+int main(){
+     int choice;   
+    while(choice != 8)   
+    {     
+        printf("1.insert 2.Delete 3.Display 4.push 5.pop 6.length 7.print 8. exit");  
+         
+        scanf("%d",&choice);  
+        switch(choice)  
+        {  
+            case 1:  
+            insert();  
+            break;  
+            case 2:  
+            delete();  
+            break;  
+            case 3:  
+            display();  
+            break;  
+            case 4:  
+            push();
+            break;
+            case 5:
+            pop();
+            break;
+            case 6:
+            length();
+            break;
+            case 7:
+            print();
+            break;
+            case 8:
+            exit(0);
+            break;  
+            default:   
+            printf("\nEnter valid choice??\n");  
+        }  
+    }  
+
+    return 0;
+
+}
